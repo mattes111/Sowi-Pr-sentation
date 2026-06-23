@@ -1,123 +1,492 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="utf-8">
-    <title>Friedensabkommen USA & Iran</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cloudflare.com">
-    <link rel="stylesheet" href="https://cloudflare.com">
-    <link rel="stylesheet" href="https://cloudflare.com">
+    <title>Friedensabkommen USA & Iran</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            display: none;
+            width: 90vw;
+            height: 90vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px;
+            animation: fadeIn 0.5s ease-in;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Title Slide */
+        .slide-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .slide-title h1 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide-title p {
+            font-size: 1.5em;
+            margin: 15px 0;
+            opacity: 0.9;
+        }
+
+        /* Content Slides */
+        h2 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #764ba2;
+            padding-bottom: 20px;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .text-content {
+            flex: 1;
+        }
+
+        .text-content ul {
+            list-style: none;
+        }
+
+        .text-content li {
+            font-size: 1.1em;
+            margin: 15px 0;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .text-content li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-size: 1.5em;
+        }
+
+        .text-content b {
+            color: #764ba2;
+        }
+
+        .image-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-content img,
+        .image-content svg {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Full Width Content */
+        .full-width {
+            grid-template-columns: 1fr;
+        }
+
+        /* Controls */
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        button {
+            background: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Slide Counter */
+        .slide-counter {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .slide {
+                padding: 40px;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+
+            .slide-title h1 {
+                font-size: 2.5em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                width: 95vw;
+                height: 95vh;
+                padding: 30px;
+            }
+
+            h2 {
+                font-size: 1.8em;
+            }
+
+            .text-content li {
+                font-size: 1em;
+            }
+
+            .slide-title h1 {
+                font-size: 2em;
+            }
+
+            .slide-title p {
+                font-size: 1.2em;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="reveal">
-        <div class="slides">
+    <div class="presentation">
+        <!-- Folie 1: Titel -->
+        <div class="slide slide-title active">
+            <h1>🕊️ Friedensabkommen zwischen USA und Iran</h1>
+            <p>Eine Analyse des historischen Wendepunkts im Juni 2026</p>
+            <p style="margin-top: 50px; font-size: 1.2em;">Präsentiert von: [Dein Name]</p>
+        </div>
 
-            <!-- Folie 1 -->
-            <section>
-                <h2>Friedensabkommen zwischen USA und Iran</h2>
-                <p>Eine Analyse des historischen Wendepunkts im Juni 2026</p>
-                <p><small>Präsentiert von: [Dein Name]</small></p>
-            </section>
+        <!-- Folie 2: Hintergrund -->
+        <div class="slide">
+            <h2>Hintergrund: Der Konflikt bis Mitte 2026</h2>
+            <div class="content">
+                <div class="text-content">
+                    <ul>
+                        <li>Jahrelange Spannungen und der Ausbruch des Krieges im Februar 2026</li>
+                        <li>Militärische Eskalationen und tausende Opfer</li>
+                        <li>Blockade der Straße von Hormus durch den Iran</li>
+                    </ul>
+                </div>
+                <div class="image-content">
+                    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%;">
+                        <!-- Vereinfachte Karte: Naher Osten -->
+                        <rect width="400" height="300" fill="#e8f4f8"/>
+                        <!-- USA (vereinfacht) -->
+                        <circle cx="80" cy="100" r="25" fill="#4169E1" opacity="0.7"/>
+                        <text x="80" y="150" text-anchor="middle" font-size="14" fill="#333">USA</text>
+                        <!-- Iran -->
+                        <circle cx="280" cy="120" r="30" fill="#DC143C" opacity="0.7"/>
+                        <text x="280" y="180" text-anchor="middle" font-size="14" fill="#333">Iran</text>
+                        <!-- Straße von Hormus (vereinfacht) -->
+                        <line x1="250" y1="200" x2="320" y2="200" stroke="#FF6347" stroke-width="3" stroke-dasharray="5,5"/>
+                        <text x="280" y="225" text-anchor="middle" font-size="12" fill="#FF6347">Straße von Hormus</text>
+                        <!-- Konflikt-Symbol -->
+                        <text x="180" y="120" font-size="40">⚔️</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-            <!-- Folie 2 -->
-            <section>
-                <h2>Hintergrund: Der Konflikt bis Mitte 2026</h2>
-                <ul>
-                    <li>Jahrelange Spannungen und der Ausbruch des Krieges im Februar 2026</li>
-                    <li>Militärische Eskalationen und tausende Opfer</li>
-                    <li>Blockade der Straße von Hormus durch den Iran</li>
-                </ul>
-            </section>
+        <!-- Folie 3: Diplomatische Wende -->
+        <div class="slide">
+            <h2>Die diplomatische Wende</h2>
+            <div class="content">
+                <div class="text-content">
+                    <ul>
+                        <li>Intensive Vermittlungsbemühungen durch Drittstaaten</li>
+                        <li><b>Schlüsselfigur:</b> Vermittlung durch Katar und Pakistan</li>
+                        <li>Einigung auf ein 14-Punkte-Memorandum of Understanding (MoU)</li>
+                    </ul>
+                </div>
+                <div class="image-content">
+                    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%;">
+                        <!-- Vermittler-Netzwerk -->
+                        <circle cx="200" cy="150" r="40" fill="#FFD700" opacity="0.8"/>
+                        <text x="200" y="160" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">Vermittlung</text>
+                        
+                        <circle cx="100" cy="80" r="30" fill="#4169E1" opacity="0.7"/>
+                        <text x="100" y="90" text-anchor="middle" font-size="11" fill="white">USA</text>
+                        
+                        <circle cx="300" cy="80" r="30" fill="#DC143C" opacity="0.7"/>
+                        <text x="300" y="90" text-anchor="middle" font-size="11" fill="white">Iran</text>
+                        
+                        <circle cx="70" cy="220" r="25" fill="#228B22" opacity="0.7"/>
+                        <text x="70" y="228" text-anchor="middle" font-size="10" fill="white">Katar</text>
+                        
+                        <circle cx="330" cy="220" r="25" fill="#228B22" opacity="0.7"/>
+                        <text x="330" y="228" text-anchor="middle" font-size="10" fill="white">Pakistan</text>
+                        
+                        <!-- Verbindungslinien -->
+                        <line x1="100" y1="110" x2="200" y2="120" stroke="#999" stroke-width="2"/>
+                        <line x1="300" y1="110" x2="200" y2="120" stroke="#999" stroke-width="2"/>
+                        <line x1="100" y1="110" x2="70" y2="200" stroke="#999" stroke-width="2"/>
+                        <line x1="300" y1="110" x2="330" y2="200" stroke="#999" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-            <!-- Folie 3 -->
-            <section>
-                <h2>Die diplomatische Wende</h2>
-                <ul>
-                    <li>Intensive Vermittlungsbemühungen durch Drittstaaten</li>
-                    <li>Schlüsselfigur: Vermittlung durch Katar und Pakistan [How Pakistan and Qatar Brokered the U.S.-Iran Deal](https://alhurra.com/en/23562)</li>
-                    <li>Einigung auf ein 14-Punkte-Memorandum of Understanding (MoU)</li>
-                </ul>
-            </section>
+        <!-- Folie 4: Kernpunkte Teil 1 -->
+        <div class="slide">
+            <h2>Kernpunkte des Abkommens (Teil 1)</h2>
+            <div class="content full-width">
+                <div class="text-content">
+                    <ul>
+                        <li><b>Beendigung der Feindseligkeiten:</b> Sofortige Einstellung aller Militäroperationen auf allen Fronten</li>
+                        <li style="margin-top: 25px;"><b>Straße von Hormus:</b> Aufhebung der US-Seeblockade und Freigabe der Schifffahrtswege</li>
+                        <li style="margin-top: 25px;"><b>Deeskalation im Libanon:</b> Zusage zur Beendigung der dortigen bewaffneten Konflikte</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-            <!-- Folie 4 -->
-            <section>
-                <h2>Kernpunkte des Abkommens (1/2)</h2>
-                <ul>
-                    <li><b>Beendigung der Feindseligkeiten:</b> Sofortige Einstellung aller Militäroperationen auf allen Fronten</li>
-                    <li><b>Straße von Hormus:</b> Aufhebung der US-Seeblockade und Freigabe der Schifffahrtswege</li>
-                    <li><b>Deeskalation im Libanon:</b> Zusage zur Beendigung der dortigen bewaffneten Konflikte</li>
-                </ul>
-            </section>
+        <!-- Folie 5: Kernpunkte Teil 2 -->
+        <div class="slide">
+            <h2>Kernpunkte des Abkommens (Teil 2)</h2>
+            <div class="content full-width">
+                <div class="text-content">
+                    <ul>
+                        <li><b>Wirtschaftliche Erholung:</b> Genehmigung des iranischen Erdölexports und Freigabe von Finanzmitteln</li>
+                        <li style="margin-top: 25px;"><b>Atomare Fragen:</b> Rückkehr der IAEA-Inspekteure in den Iran</li>
+                        <li style="margin-top: 25px;"><b>60-Tage-Frist:</b> Beginn der Verhandlungen über einen finalen Vertrag</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-            <!-- Folie 5 -->
-            <section>
-                <h2>Kernpunkte des Abkommens (2/2)</h2>
-                <ul>
-                    <li><b>Wirtschaftliche Erholung:</b> Genehmigung des iranischen Erdölexports und Freigabe von Finanzmitteln [US-Iran memorandum of understanding in full](https://www.bbc.com/news/articles/c4gy700j0eko)</li>
-                    <li><b>Atomare Fragen:</b> Rückkehr der IAEA-Inspekteure in den Iran</li>
-                    <li><b>60-Tage-Frist:</b> Beginn der Verhandlungen über einen finalen Vertrag</li>
-                </ul>
-            </section>
+        <!-- Folie 6: Wirtschaftliche Auswirkungen -->
+        <div class="slide">
+            <h2>Wirtschaftliche Auswirkungen</h2>
+            <div class="content">
+                <div class="text-content">
+                    <ul>
+                        <li>Entspannung auf den globalen Energiemärkten</li>
+                        <li>Lockerung US-amerikanischer Ölsanktionen</li>
+                        <li>Finanzielle Vereinbarungen zum wirtschaftlichen Wiederaufbau des Iran</li>
+                    </ul>
+                </div>
+                <div class="image-content">
+                    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%;">
+                        <!-- Wirtschafts-Chart -->
+                        <rect x="50" y="200" width="60" height="80" fill="#DC143C" opacity="0.6"/>
+                        <text x="80" y="295" text-anchor="middle" font-size="12" fill="#333">Sanktionen</text>
+                        
+                        <rect x="140" y="150" width="60" height="130" fill="#FFD700" opacity="0.6"/>
+                        <text x="170" y="295" text-anchor="middle" font-size="12" fill="#333">Übergang</text>
+                        
+                        <rect x="230" y="80" width="60" height="200" fill="#228B22" opacity="0.6"/>
+                        <text x="260" y="295" text-anchor="middle" font-size="12" fill="#333">Frieden</text>
+                        
+                        <rect x="320" y="50" width="60" height="230" fill="#4169E1" opacity="0.6"/>
+                        <text x="350" y="295" text-anchor="middle" font-size="12" fill="#333">Wohlstand</text>
+                        
+                        <!-- Trend-Linie -->
+                        <polyline points="80,200 170,150 260,80 350,50" stroke="#228B22" stroke-width="3" fill="none"/>
+                        <text x="200" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#228B22">↗ Positive Entwicklung</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-            <!-- Folie 6 -->
-            <section>
-                <h2>Wirtschaftliche Auswirkungen</h2>
-                <ul>
-                    <li>Entspannung auf den globalen Energiemärkten</li>
-                    <li>Lockerung US-amerikanischer Ölsanktionen</li>
-                    <li>Finanzielle Vereinbarungen zum wirtschaftlichen Wiederaufbau des Iran [What's in the deal between the US and Iran?](https://www.bbc.com/news/articles/cvgmqzr6p9mo)</li>
-                </ul>
-            </section>
+        <!-- Folie 7: Nukleare Abrüstung -->
+        <div class="slide">
+            <h2>Nukleare Abrüstung und IAEA</h2>
+            <div class="content">
+                <div class="text-content">
+                    <ul>
+                        <li>Wiedereinsetzung von UN-Nuklearinspektoren</li>
+                        <li>Iran bekräftigt formell, keine Atomwaffen anstreben zu wollen</li>
+                        <li>Detailfragen zur Urananreicherung verbleiben auf der Agenda der 60-Tage-Verhandlungen</li>
+                    </ul>
+                </div>
+                <div class="image-content">
+                    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%;">
+                        <!-- IAEA-Symbol -->
+                        <circle cx="200" cy="150" r="60" fill="none" stroke="#FF6347" stroke-width="3"/>
+                        <text x="200" y="145" text-anchor="middle" font-size="50">☢️</text>
+                        
+                        <!-- Inspektoren -->
+                        <circle cx="100" cy="80" r="20" fill="#4169E1" opacity="0.7"/>
+                        <text x="100" y="90" text-anchor="middle" font-size="12" fill="white">✓</text>
+                        
+                        <circle cx="300" cy="80" r="20" fill="#4169E1" opacity="0.7"/>
+                        <text x="300" y="90" text-anchor="middle" font-size="12" fill="white">✓</text>
+                        
+                        <!-- Verbindungen -->
+                        <line x1="120" y1="90" x2="170" y2="130" stroke="#4169E1" stroke-width="2"/>
+                        <line x1="280" y1="130" x2="330" y2="90" stroke="#4169E1" stroke-width="2"/>
+                        
+                        <text x="200" y="260" text-anchor="middle" font-size="14" font-weight="bold" fill="#228B22">Kontrolle & Transparenz</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
 
-            <!-- Folie 7 -->
-            <section>
-                <h2>Nukleare Abrüstung und IAEA</h2>
-                <ul>
-                    <li>Wiedereinsetzung von UN-Nuklearinspektoren</li>
-                    <li>Iran bekräftigt formell, keine Atomwaffen anstreben zu wollen</li>
-                    <li>Detailfragen zur Urananreicherung verbleiben auf der Agenda der 60-Tage-Verhandlungen</li>
-                </ul>
-            </section>
+        <!-- Folie 8: Geopolitische Reaktionen -->
+        <div class="slide">
+            <h2>Geopolitische Reaktionen</h2>
+            <div class="content full-width">
+                <div class="text-content">
+                    <ul>
+                        <li><b>USA:</b> Strategischer Kurswechsel unter der Regierung von Donald Trump</li>
+                        <li style="margin-top: 25px;"><b>Naher Osten:</b> Sicherheitsbedenken der Golfstaaten (VAE, Kuwait, Bahrain) durch US-Diplomatie besänftigt</li>
+                        <li style="margin-top: 25px;"><b>Europa:</b> Zurückhaltende oder skeptische Resonanz auf das schnelle Vorgehen</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-            <!-- Folie 8 -->
-            <section>
-                <h2>Geopolitische Reaktionen</h2>
-                <ul>
-                    <li>USA: Strategischer Kurswechsel unter der Regierung von Donald Trump</li>
-                    <li>Naher Osten: Sicherheitsbedenken der Golfstaaten (VSA, Kuwait, Bahrain) durch US-Diplomatie besänftigt</li>
-                    <li>Europa: Zurückhaltende oder skeptische Resonanz auf das schnelle Vorgehen</li>
-                </ul>
-            </section>
+        <!-- Folie 9: Herausforderungen und Risiken -->
+        <div class="slide">
+            <h2>Herausforderungen und Risiken</h2>
+            <div class="content full-width">
+                <div class="text-content">
+                    <ul>
+                        <li>Hohes Misstrauen zwischen Hardlinern in Washington und Teheran</li>
+                        <li style="margin-top: 25px;">Fragilität lokaler Waffenstillstände in der Region</li>
+                        <li style="margin-top: 25px;">Die kommenden Wochen entscheiden, ob der Rahmenvertrag in dauerhaften Frieden mündet</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-            <!-- Folie 9 -->
-            <section>
-                <h2>Herausforderungen und Risiken</h2>
-                <ul>
-                    <li>Hohes Misstrauen zwischen Hardlinern in Washington und Teheran</li>
-                    <li>Fragilität lokaler Waffenstillstände in der Region</li>
-                    <li>Die kommenden Wochen entscheiden, ob der Rahmenvertrag in dauerhaften Frieden mündet</li>
-                </ul>
-            </section>
-
-            <!-- Folie 10 -->
-            <section>
-                <h2>Fazit und Ausblick</h2>
-                <ul>
-                    <li>Historischer Schritt zur Vermeidung weiterer eskalierender Kriege</li>
-                    <li>Die Rückkehr zum Dialog stabilisiert die Weltwirtschaft</li>
-                    <li>Nächster Meilenstein: Das Gelingen der finalen Verhandlungen bis zum Ablauf der Frist</li>
-                    <li><b>Vielen Dank für Ihre Aufmerksamkeit!</b></li>
-                </ul>
-            </section>
-
+        <!-- Folie 10: Fazit -->
+        <div class="slide slide-title">
+            <h1>📋 Fazit und Ausblick</h1>
+            <ul style="text-align: center; list-style: none; font-size: 1.3em; line-height: 2;">
+                <li>✓ Historischer Schritt zur Vermeidung weiterer eskalierender Kriege</li>
+                <li>✓ Die Rückkehr zum Dialog stabilisiert die Weltwirtschaft</li>
+                <li>✓ Nächster Meilenstein: Das Gelingen der finalen Verhandlungen bis zum Ablauf der Frist</li>
+            </ul>
+            <p style="margin-top: 80px; font-size: 2em; font-weight: bold;">Vielen Dank für Ihre Aufmerksamkeit! 👏</p>
         </div>
     </div>
 
-    <script src="https://cloudflare.com"></script>
+    <!-- Steuerung -->
+    <div class="controls">
+        <button id="prevBtn" onclick="previousSlide()">← Zurück</button>
+        <button id="nextBtn" onclick="nextSlide()">Weiter →</button>
+    </div>
+    <div class="slide-counter">
+        <span id="current">1</span> / <span id="total">10</span>
+    </div>
+
     <script>
-        Reveal.initialize({
-            hash: true,
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[n].classList.add('active');
+            document.getElementById('current').textContent = n + 1;
+            document.getElementById('prevBtn').disabled = n === 0;
+            document.getElementById('nextBtn').disabled = n === totalSlides - 1;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        // Tastatursteuerung
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
         });
+
+        // Initialisierung
+        document.getElementById('total').textContent = totalSlides;
+        showSlide(0);
     </script>
 </body>
 </html>
