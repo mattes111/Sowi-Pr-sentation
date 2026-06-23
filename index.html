@@ -155,6 +155,9 @@
             transition: all 0.3s ease;
             color: #667eea;
             font-weight: bold;
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
         }
 
         button:hover {
@@ -164,9 +167,63 @@
             box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
         }
 
+        button:active {
+            transform: translateY(0);
+        }
+
         button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+
+        /* iPad Touch Buttons */
+        .touch-controls {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        .touch-button {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: rgba(102, 126, 234, 0.7);
+            border: 2px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            pointer-events: all;
+            user-select: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .touch-button:active {
+            transform: scale(0.95);
+            background: rgba(102, 126, 234, 0.9);
+        }
+
+        .touch-button-left {
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .touch-button-right {
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         /* Slide Counter */
@@ -223,6 +280,45 @@
 
             .slide-title p {
                 font-size: 1.2em;
+            }
+
+            /* Show touch controls on iPad/Touch devices */
+            .touch-controls {
+                display: block;
+            }
+
+            .controls {
+                display: none;
+            }
+
+            .touch-button {
+                width: 70px;
+                height: 70px;
+                font-size: 32px;
+            }
+
+            .touch-button-left {
+                left: 15px;
+            }
+
+            .touch-button-right {
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .touch-button {
+                width: 60px;
+                height: 60px;
+                font-size: 28px;
+            }
+
+            .touch-button-left {
+                left: 10px;
+            }
+
+            .touch-button-right {
+                right: 10px;
             }
         }
     </style>
@@ -442,11 +538,19 @@
         </div>
     </div>
 
-    <!-- Steuerung -->
+    <!-- Steuerung für Desktop -->
     <div class="controls">
         <button id="prevBtn" onclick="previousSlide()">← Zurück</button>
         <button id="nextBtn" onclick="nextSlide()">Weiter →</button>
     </div>
+
+    <!-- Touch-Steuerung für iPad/Mobile -->
+    <div class="touch-controls">
+        <div class="touch-button touch-button-left" onclick="previousSlide()">←</div>
+        <div class="touch-button touch-button-right" onclick="nextSlide()">→</div>
+    </div>
+
+    <!-- Slide Counter -->
     <div class="slide-counter">
         <span id="current">1</span> / <span id="total">10</span>
     </div>
@@ -483,6 +587,28 @@
             if (e.key === 'ArrowRight') nextSlide();
             if (e.key === 'ArrowLeft') previousSlide();
         });
+
+        // Swipe-Gesten für Touch-Geräte
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                nextSlide();
+            }
+            if (touchEndX > touchStartX + 50) {
+                previousSlide();
+            }
+        }
 
         // Initialisierung
         document.getElementById('total').textContent = totalSlides;
